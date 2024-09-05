@@ -130,11 +130,11 @@ export function Dia({mesSeleccionado}) {
   );
 }
 
-Mes.PropTypes = {
+Mes.propTypes = {
   MesSeleccionado: PropTypes.string.isRequired,
 }
 
-Dia.PropTypes = {
+Dia.propTypes = {
   mesSeleccionado: PropTypes.string.isRequired,
 }
 
