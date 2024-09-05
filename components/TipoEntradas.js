@@ -35,7 +35,7 @@ export const verificarReconexion = async()=>{
 const enviarFormulario = async(DatosFormulario)=>{
   console.log(DatosFormulario);
   try {
-    await axios.post("http://192.168.20.28:3000/api/formulario",DatosFormulario);
+    await axios.post("https://192.168.20.28:3000/api/formulario",DatosFormulario);
     Alert.alert("Éxito", "Datos enviados correctamente");
     console.log(DatosFormulario);
   } catch (error) {
