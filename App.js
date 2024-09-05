@@ -40,7 +40,6 @@ import {
 NetInfo.addEventListener((estado) => {
   if (estado.isConnected) {
     verificarReconexion();
-  } else {
   }
 });
 
@@ -73,7 +72,6 @@ export default function App() {
       nuevoEstado[indice] = {
         ...nuevoEstado[indice],
         [`campo${id + 1}`]: contenidos,
-        // [`tipo${id + 1}`]: categoria,
       };
       return nuevoEstado;
     });

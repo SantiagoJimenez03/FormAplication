@@ -35,7 +35,7 @@ export const verificarReconexion = async()=>{
 const enviarFormulario = async(DatosFormulario)=>{
   console.log(DatosFormulario);
   try {
-    await axios.post("https://192.168.20.28:3000/api/formulario",DatosFormulario);
+    await axios.post("http://192.168.20.28:3000/api/formulario",DatosFormulario);
     Alert.alert("Éxito", "Datos enviados correctamente");
     console.log(DatosFormulario);
   } catch (error) {
@@ -73,11 +73,11 @@ const gestionarFormulario = async (DatosFormulario) => {
 
 export function InputText(props) {
   const { textoTitulo, placeHolder, valor = '',campo, keyboardType } = props;
-  const [variable, setvariable] = useState("");
-  const [MensajeError, setMensajeError] = useState("");
+  const [variable, setVariable] = useState("");
+  const [mensajeError, setMensajeError] = useState("");
 
   const validacionMensaje = (texto) =>{      
-    setvariable(texto);
+    setVariable(texto);
     variable.trim() ==="" ? setMensajeError("Campo obligatorio y no debe contener solo espacios*"):(setMensajeError(""), campo(texto));
   } 
 
@@ -86,8 +86,6 @@ export function InputText(props) {
       setMensajeError("Campo obligatorio y no debe contener solo espacios*");
     }else if (valor === "N_Doc" && variable.length<8 ){
         setMensajeError("El numero de documento debe tener al menos 8 digitos*");
-    }else{
-      null;
     }
   }
 
@@ -103,7 +101,7 @@ export function InputText(props) {
         onBlur={()=>validacionBlur(valor)}
         keyboardType={keyboardType}
       />
-      {MensajeError ? <Text style={styles.TextoError}>{MensajeError}</Text>:null}
+      {mensajeError ? <Text style={styles.TextoError}>{mensajeError}</Text>:null}
     </View>
   );
 }
@@ -161,7 +159,7 @@ export function InputSelectMul({ textoTitulo,GrupResp, onChange}) {
 
 
 
-export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,textoTitulo2,campo}) {
+export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,textoTitulo2}) {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [inText, setInText] = useState("")
   const [error, setError] = useState(false)
@@ -243,6 +241,8 @@ InputText.propTypes = {
   textoTitulo: PropTypes.string,
   placeHolder: PropTypes.string, 
   keyboardType: PropTypes.string,
+  valor: PropTypes.string,
+  campo: PropTypes.func
 }
 
 InputSelect.propTypes = {
@@ -255,6 +255,14 @@ InputSelectMul.propTypes = {
   textoTitulo: PropTypes.string,
   GrupResp:PropTypes.number,
   onChange: PropTypes.func,
+}
+
+InputSelectText.propTypes = {
+  textoTitulo: PropTypes.string,
+  GrupResp:PropTypes.number,
+  onChange: PropTypes.func,
+  placeHolder: PropTypes.string,
+  textoTitulo2: PropTypes.string,
 }
 
 SaveButton.propTypes = {

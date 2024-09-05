@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -25,7 +26,7 @@ connection.connect((error) => {
 
 app.post("/api/formulario", async (req, res) => {
   const campo = { ...req.body };
-
+  console.log(campo);
   let arrayCategorias = {};
 
   for (let i = 1; i <= 10; i++) {
@@ -64,7 +65,9 @@ app.post("/api/formulario", async (req, res) => {
   for (let i = 0; i < valorMaximo; i += 2) {
     categorias.forEach((categoria, index) => {
       if (i < categoria.length) {
-        categoria[i] != "" ? valores[index].push([categoria[i], categoria[i + 1]]):null;
+        categoria[i] != ""
+          ? valores[index].push([categoria[i], categoria[i + 1]])
+          : null;
       }
     });
   }
@@ -83,29 +86,39 @@ app.post("/api/formulario", async (req, res) => {
   ];
 
   const envio_query = (solicitud, valor) => {
-    new Promise((resolve, reject) => {
-      resolve(solicitud_query(solicitud, valor));
+    return new Promise((resolve, reject) => {
+      solicitud_query(solicitud, valor).then(resolve).catch(reject);
     });
   };
 
   const solicitud_query = (query, values) => {
-    console.log(values);
-    connection.query(query, [values], (error, results1) => {
-      if (error) {
-        return res.status(500).json({ error: "Error en la consulta" });
-      }
+    return new Promise((resolve, reject) => {
+      connection.query(query, [values], (error, results) => {
+        if (error) {
+          // return res.status(500).json({ error: "Error en la consulta" });
+          reject(new Error("Error en la consulta"));
+        } else {
+          resolve(results);
+        }
+      });
     });
   };
 
   for (let i = 0; i < 10; i++) {
-     envio_query(query[i], valores[i]);
+    envio_query(query[i], valores[i])
+      .then(() => {
+        console.log(`Consulta ${i + 1} exitosa`);
+      })
+      .catch((error) => {
+        console.log(`Fallo en la Consulta ${i + 1} exitosa`);
+      });
   }
 
   return res.status(200).json({
     message: "Datos guardados correctamente en todas las tablas",
   });
 });
- 
+
 app.listen(3000, () => {
   console.log("Servidor corriendo en el puerto 3000");
 });
