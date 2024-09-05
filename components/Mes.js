@@ -14,7 +14,7 @@ const { width: screenWidth,  height: screenHeight} = Dimensions.get('window');
 
 
 
-export function MES({MesSeleccionado}) {
+export function Mes({MesSeleccionado}) {
   const Meses = [
     { id: "1", mes: "Enero" },
     { id: "2", mes: "Febrero" },
@@ -68,7 +68,7 @@ export function MES({MesSeleccionado}) {
   );
 }
 
-export function DIA({mesSeleccionado}) {
+export function Dia({mesSeleccionado}) {
 
   const Meses = [
     { mes: "Enero", N: 31 },
@@ -130,11 +130,11 @@ export function DIA({mesSeleccionado}) {
   );
 }
 
-MES.PropTypes = {
+Mes.PropTypes = {
   MesSeleccionado: PropTypes.string.isRequired,
 }
 
-DIA.PropTypes = {
+Dia.PropTypes = {
   mesSeleccionado: PropTypes.string.isRequired,
 }
 

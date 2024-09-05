@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 
 export function Seleccion({ onChange = () => {}, multiple = false, GrupResp }) {
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const options = Full_Categorias[GrupResp];
 
   return (
@@ -17,7 +16,7 @@ export function Seleccion({ onChange = () => {}, multiple = false, GrupResp }) {
   );
 }
 
-export function Seleccion_4({ onChange = () => {}, GrupResp }) {
+export function Seleccion2({ onChange = () => {}, GrupResp }) {
   const options = Full_Categorias[GrupResp];
   return <SeleccionGeneral2 onChange={onChange} options={options} />;
 }
@@ -28,7 +27,7 @@ Seleccion.PropTypes = {
   GrupResp: PropTypes.number, 
 }
 
-Seleccion_4.PropTypes = {
+Seleccion2.PropTypes = {
   onChange: PropTypes.string,
   GrupResp: PropTypes.number, 
 }

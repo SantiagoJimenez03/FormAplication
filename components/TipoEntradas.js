@@ -7,11 +7,12 @@ import {
   Alert,
 } from "react-native";
 import React, { useState } from "react";
-import { Seleccion, Seleccion_4 } from "./Seleccion";
+import { Seleccion, Seleccion2 } from "./Seleccion";
 import axios from "axios";
 import { styles } from "../Styles/StylesTipoEntradas";
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PropTypes from 'prop-types';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 
@@ -36,7 +37,7 @@ export const verificarReconexion = async()=>{
 const enviarFormulario = async(DatosFormulario)=>{
   console.log(DatosFormulario);
   try {
-    const response = await axios.post("http://192.168.20.28:3000/api/formulario",DatosFormulario);
+    await axios.post("http://192.168.20.28:3000/api/formulario",DatosFormulario);
     Alert.alert("Éxito", "Datos enviados correctamente");
     console.log(DatosFormulario);
   } catch (error) {
@@ -68,7 +69,6 @@ const gestionarFormulario = async (DatosFormulario) => {
       await guardarDatos(DatosFormulario);
     }
   }catch(error){
-    //
   }
 
 };
@@ -84,7 +84,6 @@ export function InputText(props) {
   } 
 
   const validacionBlur = (valor) => {
-    // Variable.trim() ==="" ? setMensajeError("Campo obligatorio y no debe contener solo espacios*"):null;    
     if(Variable.trim() ===""){
       setMensajeError("Campo obligatorio y no debe contener solo espacios*");
     }else if (valor === "N_Doc" && Variable.length<8 ){
@@ -159,102 +158,65 @@ export function InputSelectMul({ textoTitulo,GrupResp, onChange}) {
   return (
     <View style={styles.box_1}>
       <Text style={styles.TextoGrids}>{textoTitulo}</Text>
-      <Seleccion_4 onChange={handleSelectionChange} GrupResp={GrupResp} />
+      <Seleccion2 onChange={handleSelectionChange} GrupResp={GrupResp} />
       {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
     </View>
   );
 }
 
-export function InputSelect_Text({onChange, textoTitulo,GrupResp,placeHolder,textoTitulo2,campo}) {
+
+
+export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,textoTitulo2,campo}) {
   const [selectedOptions, setSelectedOptions] = useState([])
+  const [inText, setInText] = useState("")
   const [error, setError] = useState(false)
 
-  const handleSelectionChange = (options) => {
-    setSelectedOptions(options)
-
-    if (options.length === 0) {
+  const handleSelectChange = (options) => {
+    if (!Array.isArray(options)) {
+      console.error("Expected options to be an array, but got:", options);
+      return;
+    }
+    
+    setSelectedOptions(options);
+  
+    const selectedLabels = options.map(option => option?.respuesta || option?.label || "Sin etiqueta")
+  
+    if (selectedLabels.length === 0 && inText === "") {
       setError(true)
     } else {
       setError(false)
     }
 
+    const combinedValues = [...selectedLabels, inText]
+  
     if (onChange) {
-      onChange(options.map(option => ({ label: option.label })))
-      //onChange(options.map(option =>option.label).join(', '))
+      onChange(combinedValues)
     }
-  }
+  };
+
+  const handleTextChange = (texto) => {
+    setInText(texto)
+    handleSelectChange(selectedOptions)
+  };
 
   return (
     <View style={styles.box_1}>
       <Text style={styles.TextoGrids}>{textoTitulo}</Text>
-      <Seleccion_4 onChange={handleSelectionChange} GrupResp={GrupResp} />
+      <Seleccion2 onChange={handleSelectChange} GrupResp={GrupResp} />
       <Text style={styles.TextoGrids_2}>{textoTitulo2}</Text>
       <TextInput
         style={styles.Texto}
         placeholder={placeHolder}
         placeholderTextColor="#d8d9d9"
         fontSize={0.018*screenHeight}
-        onChangeText={(texto) => campo(texto)}
+        value={inText}
+        onChangeText={handleTextChange}
       />
       {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
     </View>
   );
 }
 
-export function InputSelect_Text2({ textoTitulo,GrupResp, textoTitulo1, onChange}) {
-  const [selectedOption, setSelectedOptions] = useState([]);
-
-  const handleSelectionChange = (selectedOptions) => {
-
-    setSelectedOptions(selectedOptions);
-    if (onChange) {
-      onChange(selectedOptions.map(option => ({ label: option.label })));
-    }
-  }
-
-  return (
-    <View style={styles.box_1}>
-      <Text style={styles.TextoGrids}>{textoTitulo}</Text>
-      <Text style={styles.TextoGrids}>{textoTitulo1}</Text>
-      <Seleccion_4 onChange={handleSelectionChange} GrupResp={GrupResp} />
-    </View>
-  );
-}
-
-export function InputSelect_Text3({placeHolder,textoTitulo2, textoTitulo3, GrupResp2, onChange,campo}) {
-  const [selectedOption, setSelectedOptions] = useState([]);
-  const [error, setError] = useState(false)
-
-  const handleSelectionChange = (options) => {
-    setSelectedOptions(options)
-
-    if (options.length === 0) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-
-    if (onChange) {
-      onChange(options.map(option => ({ label: option.label })))
-    }
-  }
-
-  return (
-    <View style={styles.box_1}>
-      <Text style={styles.TextoGrids_2}>{textoTitulo2}</Text>
-      <Seleccion_4 onChange={handleSelectionChange} GrupResp={GrupResp2} />
-      <Text style={styles.TextoGrids_2}>{textoTitulo3}</Text>
-      <TextInput
-        style={styles.Texto}
-        placeholder={placeHolder}
-        placeholderTextColor="#d8d9d9"
-        fontSize={0.018*screenHeight}
-        onChangeText={(texto) => campo(texto)}
-      />
-      {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
-    </View>
-  );
-}
 
 export function SaveButton(props) {
   const { text, datos} = props;
@@ -279,5 +241,11 @@ export function CancelButton(props) {
       <Text style={{ ...styles.buttonText, color: "white" }}>{text}</Text>
     </TouchableOpacity>
   );
+}
+
+InputText.PropTypes = {
+  textoTitulo: PropTypes.string,
+  placeHolder: PropTypes.string, 
+  keyboardType: PropTypes.string,
 }
 
