@@ -10,84 +10,81 @@ import React, { useState } from "react";
 import { Seleccion, Seleccion2 } from "./Seleccion";
 import axios from "axios";
 import { styles } from "../Styles/StylesTipoEntradas";
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const verificarReconexion = async()=>{
-
-  try{
-    const DatosAlmacenados = await AsyncStorage.getItem('DatosFormulario');
-    if(DatosAlmacenados){
-      Alert.alert("Reenvio","Reenviando Mierda");
+export const verificarReconexion = async () => {
+  try {
+    const DatosAlmacenados = await AsyncStorage.getItem("DatosFormulario");
+    if (DatosAlmacenados) {
+      Alert.alert("Reenvio", "Reenviando Mierda");
       const DatosAlmacenadosObj = JSON.parse(DatosAlmacenados);
       await enviarFormulario(DatosAlmacenadosObj);
-      await AsyncStorage.removeItem('DatosFormulario')
+      await AsyncStorage.removeItem("DatosFormulario");
     }
-    
-  }catch{
+  } catch {}
+};
 
-  }
-
-}
-
-const enviarFormulario = async(DatosFormulario)=>{
+const enviarFormulario = async (DatosFormulario) => {
   console.log(DatosFormulario);
   try {
-    await axios.post("http://192.168.20.28:3000/api/formulario",DatosFormulario);
+    await axios.post(
+      "https://192.168.20.28:3000/api/formulario",
+      DatosFormulario
+    );
     Alert.alert("Éxito", "Datos enviados correctamente");
     console.log(DatosFormulario);
   } catch (error) {
     Alert.alert("Error", "No se pudieron enviar los datos");
   }
-
-}
-
+};
 
 const guardarDatos = async (DatosFormulario) => {
-  
   try {
     const jsonValue = JSON.stringify(DatosFormulario);
-    await AsyncStorage.setItem('DatosFormulario', jsonValue);
-    Alert.alert('INFORMACION DE MIERDA', 'Datos almacenados');
+    await AsyncStorage.setItem("DatosFormulario", jsonValue);
+    Alert.alert("INFORMACION DE MIERDA", "Datos almacenados");
   } catch (error) {
-    Alert.alert('INFORMACION DE MIERDA', 'NO se guardo ni mierda');
+    Alert.alert("INFORMACION DE MIERDA", "NO se guardo ni mierda");
   }
 };
 
 const gestionarFormulario = async (DatosFormulario) => {
-
-  try{  
+  try {
     const estado = await NetInfo.fetch();
-    if (estado.isConnected){
+    if (estado.isConnected) {
       await enviarFormulario(DatosFormulario);
-    }
-    else {
+    } else {
       await guardarDatos(DatosFormulario);
     }
-  }catch(error){
-  }
-
+  } catch (error) {}
 };
 
 export function InputText(props) {
-  const { textoTitulo, placeHolder, valor = '',campo, keyboardType } = props;
+  const { textoTitulo, placeHolder, valor = "", campo, keyboardType } = props;
   const [variable, setVariable] = useState("");
   const [mensajeError, setMensajeError] = useState("");
 
-  const validacionMensaje = (texto) =>{      
+  const validacionMensaje = (texto) => {
     setVariable(texto);
-    variable.trim() ==="" ? setMensajeError("Campo obligatorio y no debe contener solo espacios*"):(setMensajeError(""), campo(texto));
-  } 
+
+    if (variable.trim() === "") {
+      setMensajeError("Campo obligatorio y no debe contener solo espacios*");
+    } else {
+      setMensajeError("");
+      campo(texto);
+    }
+  };
 
   const validacionBlur = (valor) => {
-    if(variable.trim() ===""){
+    if (variable.trim() === "") {
       setMensajeError("Campo obligatorio y no debe contener solo espacios*");
-    }else if (valor === "N_Doc" && variable.length<8 ){
-        setMensajeError("El numero de documento debe tener al menos 8 digitos*");
+    } else if (valor === "N_Doc" && variable.length < 8) {
+      setMensajeError("El numero de documento debe tener al menos 8 digitos*");
     }
-  }
+  };
 
   return (
     <View style={styles.box_1}>
@@ -98,98 +95,111 @@ export function InputText(props) {
         placeholderTextColor="#d8d9d9"
         fontSize={0.018 * screenHeight}
         onChangeText={validacionMensaje}
-        onBlur={()=>validacionBlur(valor)}
+        onBlur={() => validacionBlur(valor)}
         keyboardType={keyboardType}
       />
-      {mensajeError ? <Text style={styles.TextoError}>{mensajeError}</Text>:null}
+      {mensajeError ? (
+        <Text style={styles.TextoError}>{mensajeError}</Text>
+      ) : null}
     </View>
   );
 }
 
-export function InputSelect({ textoTitulo,GrupResp, onChange}) {
-
+export function InputSelect({ textoTitulo, GrupResp, onChange }) {
   const [error, setError] = useState(false);
 
   const handleSelectChange = (options) => {
-
     if (options.length === 0) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
 
     if (onChange) {
-      onChange(options.map(option => ({ label: option.label })))
+      onChange(options.map((option) => ({ label: option.label })));
     }
-  }
+  };
 
   return (
     <View style={styles.box_1}>
       <Text style={styles.TextoGrids}>{textoTitulo}</Text>
-      <Seleccion onChange={handleSelectChange} GrupResp={GrupResp}/>
-      {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
+      <Seleccion onChange={handleSelectChange} GrupResp={GrupResp} />
+      {error && (
+        <Text style={styles.TextoError}>
+          Por favor, seleccione al menos una opción.
+        </Text>
+      )}
     </View>
   );
 }
 
-export function InputSelectMul({ textoTitulo,GrupResp, onChange}) {
-  const [error, setError] = useState(false)
+export function InputSelectMul({ textoTitulo, GrupResp, onChange }) {
+  const [error, setError] = useState(false);
 
   const handleSelectionChange = (options) => {
-
     if (options.length === 0) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
 
     if (onChange) {
-      onChange(options.map(option => ({ label: option.label })))
+      onChange(options.map((option) => ({ label: option.label })));
     }
-  }
+  };
 
   return (
     <View style={styles.box_1}>
       <Text style={styles.TextoGrids}>{textoTitulo}</Text>
       <Seleccion2 onChange={handleSelectionChange} GrupResp={GrupResp} />
-      {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
+      {error && (
+        <Text style={styles.TextoError}>
+          Por favor, seleccione al menos una opción.
+        </Text>
+      )}
     </View>
   );
 }
 
-
-
-export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,textoTitulo2}) {
-  const [selectedOptions, setSelectedOptions] = useState([])
-  const [inText, setInText] = useState("")
-  const [error, setError] = useState(false)
+export function InputSelectText({
+  onChange,
+  textoTitulo,
+  GrupResp,
+  placeHolder,
+  textoTitulo2,
+}) {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [inText, setInText] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSelectChange = (options) => {
     if (!Array.isArray(options)) {
       console.error("Expected options to be an array, but got:", options);
       return;
     }
-    
+
     setSelectedOptions(options);
-  
-    const selectedLabels = options.map(option => option?.respuesta || option?.label || "Sin etiqueta")
-  
+
+    const selectedLabels = options.map(
+      (option) => option?.respuesta || option?.label || "Sin etiqueta"
+    );
+
     if (selectedLabels.length === 0 && inText === "") {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
 
-    const combinedValues = [...selectedLabels, inText]
-  
+    const combinedValues = [...selectedLabels, inText];
+
     if (onChange) {
-      onChange(combinedValues)
+      onChange(combinedValues);
     }
   };
 
   const handleTextChange = (texto) => {
-    setInText(texto)
-    handleSelectChange(selectedOptions)
+    setInText(texto);
+    handleSelectChange(selectedOptions);
   };
 
   return (
@@ -201,19 +211,21 @@ export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,text
         style={styles.Texto}
         placeholder={placeHolder}
         placeholderTextColor="#d8d9d9"
-        fontSize={0.018*screenHeight}
+        fontSize={0.018 * screenHeight}
         value={inText}
         onChangeText={handleTextChange}
       />
-      {error && <Text style={styles.TextoError}>Por favor, seleccione al menos una opción.</Text>}
+      {error && (
+        <Text style={styles.TextoError}>
+          Por favor, seleccione al menos una opción.
+        </Text>
+      )}
     </View>
   );
 }
 
-
-
 export function SaveButton(props) {
-  const { text, datos} = props;
+  const { text, datos } = props;
 
   return (
     <TouchableOpacity
@@ -229,9 +241,7 @@ export function CancelButton(props) {
 
   return (
     <TouchableOpacity
-      style={{ ...styles.buttonCancel, 
-      backgroundColor: "#142ab5", 
-      }}>
+      style={{ ...styles.buttonCancel, backgroundColor: "#142ab5" }}>
       <Text style={{ ...styles.buttonText, color: "white" }}>{text}</Text>
     </TouchableOpacity>
   );
@@ -239,33 +249,33 @@ export function CancelButton(props) {
 
 InputText.propTypes = {
   textoTitulo: PropTypes.string,
-  placeHolder: PropTypes.string, 
+  placeHolder: PropTypes.string,
   keyboardType: PropTypes.string,
   valor: PropTypes.string,
-  campo: PropTypes.func
-}
+  campo: PropTypes.func,
+};
 
 InputSelect.propTypes = {
   textoTitulo: PropTypes.string,
-  GrupResp:PropTypes.number,
+  GrupResp: PropTypes.number,
   onChange: PropTypes.func,
-}
+};
 
 InputSelectMul.propTypes = {
   textoTitulo: PropTypes.string,
-  GrupResp:PropTypes.number,
+  GrupResp: PropTypes.number,
   onChange: PropTypes.func,
-}
+};
 
 InputSelectText.propTypes = {
   textoTitulo: PropTypes.string,
-  GrupResp:PropTypes.number,
+  GrupResp: PropTypes.number,
   onChange: PropTypes.func,
   placeHolder: PropTypes.string,
   textoTitulo2: PropTypes.string,
-}
+};
 
 SaveButton.propTypes = {
   text: PropTypes.string,
-  datos: PropTypes.array, 
-}
+  datos: PropTypes.array,
+};

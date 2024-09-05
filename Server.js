@@ -65,9 +65,9 @@ app.post("/api/formulario", async (req, res) => {
   for (let i = 0; i < valorMaximo; i += 2) {
     categorias.forEach((categoria, index) => {
       if (i < categoria.length) {
-        categoria[i] != ""
-          ? valores[index].push([categoria[i], categoria[i + 1]])
-          : null;
+          if(categoria[i] != ""){
+            valores[index].push([categoria[i], categoria[i + 1]]);
+          }
       }
     });
   }
