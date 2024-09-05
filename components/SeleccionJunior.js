@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
 import { styles } from "../Styles/StylesSeleccionJunior";
-const { height: screenHeight } = Dimensions.get("window");
+import PropTypes from 'prop-types';
 
+const { height: screenHeight } = Dimensions.get("window");
 
 export function SeleccionGeneral({ onChange, multiple = false, options }) {
   const [Selected, setSelected] = useState([]);
@@ -94,4 +94,15 @@ export function SeleccionGeneral2({ onChange, options }) {
       ))}
     </View>
   );
+}
+
+SeleccionGeneral.PropTypes = {
+  onChange: PropTypes.string,
+  multiple: PropTypes.bool,
+  options: PropTypes.array, 
+}
+
+SeleccionGeneral2.PropTypes = {
+  onChange: PropTypes.string,
+  options: PropTypes.array, 
 }

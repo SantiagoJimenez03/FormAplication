@@ -97,8 +97,8 @@ app.post("/api/formulario", async (req, res) => {
     });
   };
 
-  for (i = 0; i < 10; i++) {
-    await envio_query(query[i], valores[i]);
+  for (let i = 0; i < 10; i++) {
+     envio_query(query[i], valores[i]);
   }
 
   return res.status(200).json({

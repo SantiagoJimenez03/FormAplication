@@ -8,8 +8,11 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
+import PropTypes from 'prop-types';
 
 const { width: screenWidth,  height: screenHeight} = Dimensions.get('window');
+
+
 
 export function MES({MesSeleccionado}) {
   const Meses = [
@@ -65,7 +68,7 @@ export function MES({MesSeleccionado}) {
   );
 }
 
-export function DIA({ mesSeleccionado }) {
+export function DIA({mesSeleccionado}) {
 
   const Meses = [
     { mes: "Enero", N: 31 },
@@ -125,6 +128,14 @@ export function DIA({ mesSeleccionado }) {
       </Modal>
     </View>
   );
+}
+
+MES.PropTypes = {
+  MesSeleccionado: PropTypes.string.isRequired,
+}
+
+DIA.PropTypes = {
+  mesSeleccionado: PropTypes.string.isRequired,
 }
 
 const styles = StyleSheet.create({

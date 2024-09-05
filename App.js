@@ -6,10 +6,8 @@ import {
   View,
   TextInput,
   StatusBar,
-  Alert,
 } from "react-native";
 
-import { SaveButton, CancelButton } from "./components/TipoEntradas";
 import { MES, DIA } from "./components/Mes";
 import { styles } from "./Styles/StylesPrincipal";
 import "react-native-gesture-handler";
@@ -18,15 +16,11 @@ import {
   InputSelect,
   InputSelectMul,
   InputSelect_Text,
-  InputText_Cat1,
-  InputSelect_Text2,
-  InputSelect_Text3,
-} from "./components/TipoEntradas";
-import NetInfo from "@react-native-community/netinfo";
-import {
-  enviarFormulario,
+  SaveButton,
+  CancelButton,
   verificarReconexion,
 } from "./components/TipoEntradas";
+import NetInfo from "@react-native-community/netinfo";
 
 import {
   Datos_Personales,
@@ -43,7 +37,7 @@ import {
   categorias,
 } from "./components/Preguntas";
 
-// enviarFormulario();
+
 
 NetInfo.addEventListener((estado) => {
   if (estado.isConnected) {
@@ -53,8 +47,7 @@ NetInfo.addEventListener((estado) => {
 });
 
 export default function App() {
-  const [mesSeleccionado, setmesSeleccionado] = useState("Enero")
-  //const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(categorias[0])
+  const [mesSeleccionado, setmesSeleccionado] = useState("Enero");
 
   const Data = [];
 
@@ -100,8 +93,16 @@ export default function App() {
   const campos2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const campoCategorias = {
-    5:1, 6:1, 7:1, 8:1, 9:1, 3:1, 4:1,
-    0:4, 1:4, 2:4,
+    5: 1,
+    6: 1,
+    7: 1,
+    8: 1,
+    9: 1,
+    3: 1,
+    4: 1,
+    0: 4,
+    1: 4,
+    2: 4,
   };
 
   const initialState = campos2.reduce((acc, num) => {
@@ -121,11 +122,14 @@ export default function App() {
           campo: num,
           selecciones,
           texto,
-          categoria:categorias[categoriaIndice],
+          categoria: categorias[categoriaIndice],
         };
       });
       preguntas.forEach(({ campo, selecciones, texto, categoria }) => {
-        const combinedValue = [...selecciones, texto ? { label: texto }:null,].filter(Boolean);
+        const combinedValue = [
+          ...selecciones,
+          texto ? { label: texto } : null,
+        ].filter(Boolean);
         llenarCampo(campo, combinedValue, categoria);
       });
     },
@@ -177,7 +181,7 @@ export default function App() {
               campo={(value) => llenarCampo(1, value, categorias[0])}
             />
 
-                    {/*------------------------------------------------  */}
+            {/*------------------------------------------------  */}
             <View style={styles.box_fecha}>
               <Text style={styles.TextoGrids}>1.3 Fecha de nacimineto</Text>
               <View style={styles.box_2}>
@@ -197,7 +201,7 @@ export default function App() {
                 />
               </View>
             </View>
-                    {/*------------------------------------------------  */}
+            {/*------------------------------------------------  */}
 
             <InputText
               textoTitulo={
@@ -278,9 +282,7 @@ export default function App() {
           {/*------------------------------------------------------------------------------- */}
           {/*------------------------------------------------------------------------------- */}
           <View style={styles.box_1}>
-            <Text style={styles.subTituloCat}>
-              2. DATOS DE COMUNICACIONES
-            </Text>
+            <Text style={styles.subTituloCat}>2. DATOS DE COMUNICACIONES</Text>
 
             <InputSelect
               textoTitulo={
@@ -339,9 +341,11 @@ export default function App() {
               GrupResp={3}
               textoTitulo2="Otra: "
               placeHolder="Ej: Biblioteca"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 5)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 5);
               }}
-              campo={(value) => {P_Texto(value, 5)
+              campo={(value) => {
+                P_Texto(value, 5);
               }}
             />
 
@@ -352,9 +356,11 @@ export default function App() {
               GrupResp={4}
               textoTitulo2="Otra: "
               placeHolder="Ej: Twitter"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 6)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 6);
               }}
-              campo={(value) => {P_Texto(value, 6)
+              campo={(value) => {
+                P_Texto(value, 6);
               }}
             />
 
@@ -365,9 +371,11 @@ export default function App() {
               GrupResp={5}
               textoTitulo2="Otra: "
               placeHolder="Ej: Snapchat"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 7)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 7);
               }}
-              campo={(value) => {P_Texto(value, 7)
+              campo={(value) => {
+                P_Texto(value, 7);
               }}
             />
 
@@ -378,9 +386,11 @@ export default function App() {
               GrupResp={6}
               textoTitulo2="Otra: "
               placeHolder="Ej: Netflix"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 8)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 8);
               }}
-              campo={(value) => {P_Texto(value, 8)
+              campo={(value) => {
+                P_Texto(value, 8);
               }}
             />
 
@@ -391,19 +401,19 @@ export default function App() {
               GrupResp={7}
               textoTitulo2="Otra: "
               placeHolder="Ej: Netzu"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 9)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 9);
               }}
-              campo={(value) => {P_Texto(value, 9)
+              campo={(value) => {
+                P_Texto(value, 9);
               }}
             />
           </View>
           {/*------------------------------------------------------------------------------- */}
           {/*------------------------------------------------------------------------------- */}
           <View style={styles.box_1}>
-            <Text style={styles.subTituloCat}>
-              3. DATOS SOCIOECONOMICOS
-            </Text>
-            
+            <Text style={styles.subTituloCat}>3. DATOS SOCIOECONOMICOS</Text>
+
             <InputText
               textoTitulo={
                 Datos_Socioeconomicos.find((p) => p.id === 1)?.pregunta || ""
@@ -451,10 +461,8 @@ export default function App() {
           {/*------------------------------------------------------------------------------- */}
           {/*------------------------------------------------------------------------------- */}
           <View style={styles.box_1}>
-            <Text style={styles.subTituloCat}>
-              4. PROGRAMAS ESTATALES
-            </Text>
-            
+            <Text style={styles.subTituloCat}>4. PROGRAMAS ESTATALES</Text>
+
             <InputSelect
               textoTitulo={
                 Programas_Estales.find((p) => p.id === 1)?.pregunta || ""
@@ -546,19 +554,23 @@ export default function App() {
 
             <InputSelect_Text
               textoTitulo={
-                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 1)?.pregunta || ""
+                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 1)
+                  ?.pregunta || ""
               }
               GrupResp={13}
               textoTitulo2="Otra: "
               placeHolder="Ej: -----------"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 0)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 0);
               }}
-              campo={(value) => {P_Texto(value, 0)
+              campo={(value) => {
+                P_Texto(value, 0);
               }}
             />
             <InputSelectMul
               textoTitulo={
-                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 2)?.pregunta || ""
+                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 2)
+                  ?.pregunta || ""
               }
               GrupResp={14}
               onChange={(selectedOptions) =>
@@ -567,19 +579,23 @@ export default function App() {
             />
             <InputSelect_Text
               textoTitulo={
-                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 3)?.pregunta || ""
+                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 3)
+                  ?.pregunta || ""
               }
               GrupResp={15}
               textoTitulo2="Otra: "
               placeHolder="Ej: -----------"
-              onChange={(selectedOptions) => {P_Seleccion(selectedOptions, 2)
+              onChange={(selectedOptions) => {
+                P_Seleccion(selectedOptions, 2);
               }}
-              campo={(value) => {P_Texto(value, 2)
+              campo={(value) => {
+                P_Texto(value, 2);
               }}
             />
             <InputSelect
               textoTitulo={
-                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 4)?.pregunta || ""
+                Datos_Agremiacion_y_Ciudadania.find((p) => p.id === 4)
+                  ?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -590,9 +606,7 @@ export default function App() {
           {/*------------------------------------------------------------------------------- */}
           {/*------------------------------------------------------------------------------- */}
           <View style={styles.box_1}>
-            <Text style={styles.subTituloCat}>
-              6. DATOS FINANCIEROS
-            </Text>
+            <Text style={styles.subTituloCat}>6. DATOS FINANCIEROS</Text>
 
             <InputSelect
               textoTitulo={
@@ -643,14 +657,18 @@ export default function App() {
 
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 1)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 1
+                )?.pregunta || ""
               }
               placeHolder="Ej: 5.70492, -72.94146"
               campo={(value) => llenarCampo(0, value, categorias[6])}
             />
             <InputSelect
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 2)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 2
+                )?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -659,21 +677,27 @@ export default function App() {
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 3)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 3
+                )?.pregunta || ""
               }
               placeHolder="Ej: 8 m^2"
               campo={(value) => llenarCampo(2, value, categorias[6])}
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 4)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 4
+                )?.pregunta || ""
               }
               placeHolder="Ej: El estanquito"
               campo={(value) => llenarCampo(3, value, categorias[6])}
             />
             <InputSelect
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 5)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 5
+                )?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -682,7 +706,9 @@ export default function App() {
             />
             <InputSelect
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 6)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 6
+                )?.pregunta || ""
               }
               GrupResp={18}
               onChange={(selectedOptions) =>
@@ -691,42 +717,54 @@ export default function App() {
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 7)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 7
+                )?.pregunta || ""
               }
               placeHolder="Ej: 1234567"
               campo={(value) => llenarCampo(6, value, categorias[6])}
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 8)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 8
+                )?.pregunta || ""
               }
               placeHolder="Ej: Arauca"
               campo={(value) => llenarCampo(7, value, categorias[6])}
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 9)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 9
+                )?.pregunta || ""
               }
               placeHolder="Ej: Saravena"
               campo={(value) => llenarCampo(8, value, categorias[6])}
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 10)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 10
+                )?.pregunta || ""
               }
               placeHolder="Ej: La Pava"
               campo={(value) => llenarCampo(9, value, categorias[6])}
             />
             <InputText
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 11)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 11
+                )?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(10, value, categorias[6])}
             />
             <InputSelect
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 12)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 12
+                )?.pregunta || ""
               }
               GrupResp={19}
               onChange={(selectedOptions) =>
@@ -735,7 +773,9 @@ export default function App() {
             />
             <InputSelect
               textoTitulo={
-                Datos_Georeferenciales_Predios_Productivos.find((p) => p.id === 13)?.pregunta || ""
+                Datos_Georeferenciales_Predios_Productivos.find(
+                  (p) => p.id === 13
+                )?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -835,7 +875,8 @@ export default function App() {
 
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 1)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 1)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(0, value, categorias[8])}
@@ -854,28 +895,32 @@ export default function App() {
             /> */}
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 3)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 3)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(2, value, categorias[8])}
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 4)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 4)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(3, value, categorias[8])}
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 5)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 5)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(4, value, categorias[8])}
             />
             <InputSelect
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 6)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 6)
+                  ?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -884,7 +929,8 @@ export default function App() {
             />
             <InputSelect
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 7)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 7)
+                  ?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -893,7 +939,8 @@ export default function App() {
             />
             <InputSelect
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 8)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 8)
+                  ?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -902,7 +949,8 @@ export default function App() {
             />
             <InputSelect
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 9)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 9)
+                  ?.pregunta || ""
               }
               GrupResp={2}
               onChange={(selectedOptions) =>
@@ -911,35 +959,40 @@ export default function App() {
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 10)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 10)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: ------------"
               campo={(value) => llenarCampo(9, value, categorias[8])}
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 11)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 11)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: 50 m^2"
               campo={(value) => llenarCampo(10, value, categorias[8])}
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 12)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 12)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: -------------"
               campo={(value) => llenarCampo(11, value, categorias[8])}
             />
             <InputText
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 13)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 13)
+                  ?.pregunta || ""
               }
               placeHolder="Ej: -------------"
               campo={(value) => llenarCampo(12, value, categorias[8])}
             />
             <InputSelectMul
               textoTitulo={
-                Datos_Produccion_Agropecuaria.find((p) => p.id === 14)?.pregunta || ""
+                Datos_Produccion_Agropecuaria.find((p) => p.id === 14)
+                  ?.pregunta || ""
               }
               GrupResp={28}
               onChange={(selectedOptions) =>
@@ -950,9 +1003,7 @@ export default function App() {
           {/*------------------------------------------------------------------------------- */}
           {/*------------------------------------------------------------------------------- */}
           <View style={styles.box_1}>
-            <Text style={styles.subTituloCat}>
-              10. INFORMACIÓN DE APOYO
-            </Text>
+            <Text style={styles.subTituloCat}>10. INFORMACIÓN DE APOYO</Text>
 
             <InputText
               textoTitulo={
