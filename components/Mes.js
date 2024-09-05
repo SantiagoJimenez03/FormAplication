@@ -12,8 +12,6 @@ import PropTypes from 'prop-types';
 
 const { width: screenWidth,  height: screenHeight} = Dimensions.get('window');
 
-
-
 export function Mes({MesSeleccionado}) {
   const Meses = [
     { id: "1", mes: "Enero" },
@@ -131,7 +129,7 @@ export function Dia({mesSeleccionado}) {
 }
 
 Mes.propTypes = {
-  MesSeleccionado: PropTypes.string.isRequired,
+  MesSeleccionado: PropTypes.func.isRequired,
 }
 
 Dia.propTypes = {
@@ -141,11 +139,6 @@ Dia.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // shadowColor: "#000", 
-    // shadowOffset: { width: 0, height: 2 }, 
-    // shadowOpacity: 0.25, 
-    // shadowRadius: 3.84, 
-    // elevation: 8,
   },
   Button: {
     flex: 1,
@@ -164,14 +157,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "#186050ec",
     backgroundColor: "#8ecef1",
   },
 
   Option: {
     marginVertical: 5,
     paddingVertical: 5,
-    //backgroundColor: "#165345",
     backgroundColor: "#142ab5",
     borderRadius: 10,
   },

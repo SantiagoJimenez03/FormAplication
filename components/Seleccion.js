@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SeleccionGeneral, SeleccionGeneral2 } from "./SeleccionJunior";
 import { Full_Categorias } from "./For_Respuestas";
 import PropTypes from 'prop-types';
@@ -16,18 +16,19 @@ export function Seleccion({ onChange = () => {}, multiple = false, GrupResp }) {
   );
 }
 
-export function Seleccion2({ onChange = () => {}, GrupResp }) {
+export function Seleccion2({ onChange= () => {}, GrupResp }) {
   const options = Full_Categorias[GrupResp];
   return <SeleccionGeneral2 onChange={onChange} options={options} />;
+  
 }
 
-Seleccion.PropTypes = {
-  onChange: PropTypes.string,
+Seleccion.propTypes = {
+  onChange: PropTypes.func,
   multiple: PropTypes.bool,
   GrupResp: PropTypes.number, 
 }
 
-Seleccion2.PropTypes = {
-  onChange: PropTypes.string,
+Seleccion2.propTypes = {
+  onChange: PropTypes.func,
   GrupResp: PropTypes.number, 
 }

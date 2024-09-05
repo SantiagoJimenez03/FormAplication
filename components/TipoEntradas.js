@@ -15,8 +15,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import PropTypes from 'prop-types';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-
-
 export const verificarReconexion = async()=>{
 
   try{
@@ -75,18 +73,18 @@ const gestionarFormulario = async (DatosFormulario) => {
 
 export function InputText(props) {
   const { textoTitulo, placeHolder, valor = '',campo, keyboardType } = props;
-  const [Variable, setVariable] = useState("");
+  const [variable, setvariable] = useState("");
   const [MensajeError, setMensajeError] = useState("");
 
   const validacionMensaje = (texto) =>{      
-    setVariable(texto);
-    Variable.trim() ==="" ? setMensajeError("Campo obligatorio y no debe contener solo espacios*"):(setMensajeError(""), campo(texto));
+    setvariable(texto);
+    variable.trim() ==="" ? setMensajeError("Campo obligatorio y no debe contener solo espacios*"):(setMensajeError(""), campo(texto));
   } 
 
   const validacionBlur = (valor) => {
-    if(Variable.trim() ===""){
+    if(variable.trim() ===""){
       setMensajeError("Campo obligatorio y no debe contener solo espacios*");
-    }else if (valor === "N_Doc" && Variable.length<8 ){
+    }else if (valor === "N_Doc" && variable.length<8 ){
         setMensajeError("El numero de documento debe tener al menos 8 digitos*");
     }else{
       null;
@@ -111,11 +109,10 @@ export function InputText(props) {
 }
 
 export function InputSelect({ textoTitulo,GrupResp, onChange}) {
-  const [selectedOptions, setSelectedOptions] = useState([])
+
   const [error, setError] = useState(false);
 
   const handleSelectChange = (options) => {
-    setSelectedOptions(options)
 
     if (options.length === 0) {
       setError(true)
@@ -138,11 +135,9 @@ export function InputSelect({ textoTitulo,GrupResp, onChange}) {
 }
 
 export function InputSelectMul({ textoTitulo,GrupResp, onChange}) {
-  const [selectedOptions, setSelectedOptions] = useState([])
   const [error, setError] = useState(false)
 
   const handleSelectionChange = (options) => {
-    setSelectedOptions(options)
 
     if (options.length === 0) {
       setError(true)
@@ -218,6 +213,7 @@ export function InputSelectText({onChange, textoTitulo,GrupResp,placeHolder,text
 }
 
 
+
 export function SaveButton(props) {
   const { text, datos} = props;
 
@@ -243,9 +239,25 @@ export function CancelButton(props) {
   );
 }
 
-InputText.PropTypes = {
+InputText.propTypes = {
   textoTitulo: PropTypes.string,
   placeHolder: PropTypes.string, 
   keyboardType: PropTypes.string,
 }
 
+InputSelect.propTypes = {
+  textoTitulo: PropTypes.string,
+  GrupResp:PropTypes.number,
+  onChange: PropTypes.func,
+}
+
+InputSelectMul.propTypes = {
+  textoTitulo: PropTypes.string,
+  GrupResp:PropTypes.number,
+  onChange: PropTypes.func,
+}
+
+SaveButton.propTypes = {
+  text: PropTypes.string,
+  datos: PropTypes.array, 
+}

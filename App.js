@@ -79,14 +79,14 @@ export default function App() {
     });
   };
 
-  // useEffect(() => {
-  //   datosFormulario.forEach((obj, index) => {
-  //     console.log(`Objeto ${index + 1}:`);
-  //     Object.entries(obj).forEach(([key, value]) => {
-  //       console.log(`  ${key}: ${value}`);
-  //     });
-  //   });
-  // }, [datosFormulario]);
+  useEffect(() => {
+    datosFormulario.forEach((obj, index) => {
+      console.log(`Objeto ${index + 1}:`);
+      Object.entries(obj).forEach(([key, value]) => {
+        console.log(`  ${key}: ${value}`);
+      });
+    });
+  }, [datosFormulario]);
 
   return (
     <>
@@ -165,7 +165,9 @@ export default function App() {
                 Datos_Personales.find((p) => p.id === 6)?.pregunta || ""
               }
               placeHolder="Ej: 12345678"
+              valor="N_Doc"
               campo={(value) => llenarCampo(5, value, categorias[0])}
+              keyboardType="numeric"
             />
 
             <InputSelect
@@ -184,6 +186,7 @@ export default function App() {
               }
               placeHolder="Ej: 3219876543"
               campo={(value) => llenarCampo(7, value, categorias[0])}
+              keyboardType="numeric"
             />
 
             <InputText
@@ -192,6 +195,7 @@ export default function App() {
               }
               placeHolder="Ej: 3219876543"
               campo={(value) => llenarCampo(8, value, categorias[0])}
+              keyboardType="numeric"
             />
 
             <InputText
@@ -343,13 +347,14 @@ export default function App() {
               }
               placeHolder="Ej: 4"
               campo={(value) => llenarCampo(0, value, categorias[2])}
+              keyboardType="numeric"
             />
 
             <InputText
               textoTitulo={
                 Datos_Socioeconomicos.find((p) => p.id === 2)?.pregunta || ""
               }
-              placeHolder="Ej: Sopla Mondá"
+              placeHolder="Ej: ---------"
               campo={(value) => llenarCampo(1, value, categorias[2])}
             />
 
@@ -359,6 +364,7 @@ export default function App() {
               }
               placeHolder="Ej: 2"
               campo={(value) => llenarCampo(2, value, categorias[2])}
+              keyboardType="numeric"
             />
 
             <InputSelect

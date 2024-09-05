@@ -7,19 +7,19 @@ import PropTypes from 'prop-types';
 const { height: screenHeight } = Dimensions.get("window");
 
 export function SeleccionGeneral({ onChange, multiple = false, options }) {
-  const [Selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
-    const selectedOptions = Selected.map((id) => {
+    const selectedOptions = selected.map((id) => {
       const option = options.find((opt) => opt.id === id);
       return { id, label: option?.respuesta || "" };
     });
     onChange(selectedOptions);
-  }, [Selected]);
+  }, [selected]);
 
   function toggle(id) {
-    let index = Selected.findIndex((i) => i === id);
-    let arrSelecteds = [...Selected];
+    let index = selected.findIndex((i) => i === id);
+    let arrSelecteds = [...selected];
     if (index !== -1) {
       arrSelecteds.splice(index, 1);
     } else {
@@ -36,7 +36,7 @@ export function SeleccionGeneral({ onChange, multiple = false, options }) {
           style={styles.seleccion}
           onPress={() => toggle(op?.id)}>
           <View style={styles.checkBox}>
-            {Selected.findIndex((i) => i === op.id) !== -1 ? (
+            {selected.findIndex((i) => i === op.id) !== -1 ? (
               <MaterialCommunityIcons
                 name="check-bold"
                 size={0.023 * screenHeight}
@@ -52,19 +52,19 @@ export function SeleccionGeneral({ onChange, multiple = false, options }) {
 }
 
 export function SeleccionGeneral2({ onChange, options }) {
-  const [Selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
-    const selectedOptions = Selected.map((id) => {
+    const selectedOptions = selected.map((id) => {
       const option = options.find((opt) => opt.id === id);
       return option ? { id, label: option.respuesta } : null;
     }).filter((option) => option !== null);
     onChange(selectedOptions);
-  }, [Selected]);
+  }, [selected]);
 
   function toggle(id) {
-    let index = Selected.findIndex((i) => i === id);
-    let arrSelecteds = [...Selected];
+    let index = selected.findIndex((i) => i === id);
+    let arrSelecteds = [...selected];
     if (index !== -1) {
       arrSelecteds.splice(index, 1);
     } else {
@@ -81,7 +81,7 @@ export function SeleccionGeneral2({ onChange, options }) {
           onPress={() => toggle(op?.id)}
         >
           <View style={styles.checkBox}>
-            {Selected.findIndex((i) => i === op.id) !== -1 ? (
+            {selected.findIndex((i) => i === op.id) !== -1 ? (
               <MaterialCommunityIcons
                 name="check-bold"
                 size={0.023 * screenHeight}
@@ -96,13 +96,13 @@ export function SeleccionGeneral2({ onChange, options }) {
   );
 }
 
-SeleccionGeneral.PropTypes = {
-  onChange: PropTypes.string,
+SeleccionGeneral.propTypes = {
+  onChange: PropTypes.func,
   multiple: PropTypes.bool,
   options: PropTypes.array, 
 }
 
-SeleccionGeneral2.PropTypes = {
-  onChange: PropTypes.string,
+SeleccionGeneral2.propTypes = {
+  onChange: PropTypes.func,
   options: PropTypes.array, 
 }
